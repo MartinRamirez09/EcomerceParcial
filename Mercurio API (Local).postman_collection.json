@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "3010c66f-3ef1-43d2-b32e-1c3b92e5d2d3",
+		"name": "Mercurio API (Local)",
+		"description": "Colección de pruebas para Mercurio (FastAPI).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33761662"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\", () => pm.response.code === 200);",
+									"const data = pm.response.json();",
+									"pm.environment.set('token', data.access_token);",
+									"pm.test('Token guardado', ()=> !!pm.environment.get('token'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Productos (PROTEGIDO)",
+			"item": [
+				{
+					"name": "Crear producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', ()=> pm.response.code === 201);",
+									"const r = pm.response.json();",
+									"pm.environment.set('producto_id', r.id);",
+									"pm.test('producto_id seteado', ()=> !!pm.environment.get('producto_id'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Auriculares Pro X\",\n  \"precio\": 199.99,\n  \"descripcion\": \"Bluetooth 5.3, cancelación de ruido\",\n  \"imagen\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"precio\": 179.99\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver imagen (binaria)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}/imagen",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}",
+								"imagen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('200 OK', ()=> pm.response.code === 200 || pm.response.code === 204);",
+									"if (pm.response.code === 200) {",
+									"  const r = pm.response.json();",
+									"  pm.test('Mensaje de eliminado', ()=> r.message && r.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vendedores (PROTEGIDO)",
+			"item": [
+				{
+					"name": "Mi perfil",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('200 OK', ()=> pm.response.code === 200);",
+									"const u = pm.response.json();",
+									"pm.environment.set('vendedor_id', u.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendedores/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vendedores",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener vendedor por ID (self)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendedores/{{vendedor_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vendedores",
+								"{{vendedor_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar vendedor (self)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nuevo@shop.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/vendedores/{{vendedor_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vendedores",
+								"{{vendedor_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar vendedor (self)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendedores/{{vendedor_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vendedores",
+								"{{vendedor_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar vendedores (simple)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendedores/?skip=0&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vendedores",
+								""
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Debug",
+			"item": [
+				{
+					"name": "_debug/ia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/_debug/ia",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"_debug",
+								"ia"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	}
+}

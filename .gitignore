@@ -1,0 +1,13 @@
+# Entorno
+.venv/
+__pycache__/
+*.pyc
+
+# Entorno y secretos
+.env
+.env.*
+!.env.template
+
+# IDE
+.vscode/
+.idea/

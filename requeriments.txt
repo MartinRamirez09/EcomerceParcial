@@ -1,0 +1,25 @@
+# --- Core API ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# --- DB ---
+SQLAlchemy==2.0.35
+mysql-connector-python==9.0.0
+
+# --- Auth / Seguridad ---
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2                 # Fijado para evitar el bug de Windows con passlib
+python-jose[cryptography]==3.3.0
+python-multipart==0.0.9       # Necesario para OAuth2PasswordRequestForm (login)
+
+# --- Validación / utilidades ---
+pydantic==2.9.2
+email-validator==2.2.0
+python-dotenv==1.0.1
+requests==2.32.3              # Para Pollinations y otras llamadas HTTP
+
+# --- IA Texto (Gemini) ---
+google-generativeai==0.8.3
+
+# --- IA Imágenes (opcional) ---
+openai>=1.40.0                # Solo si usarás IMAGE_API_PROVIDER=openai
