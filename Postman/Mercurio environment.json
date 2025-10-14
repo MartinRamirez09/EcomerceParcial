@@ -1,0 +1,46 @@
+{
+	"id": "ff41d942-b81e-4ab0-8962-eeb1e1d411c5",
+	"name": "Mercurio - Local",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"enabled": true
+		},
+		{
+			"key": "email",
+			"value": "vendedor@shop.com",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "123456",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "producto_id",
+			"value": "1",
+			"enabled": true
+		},
+		{
+			"key": "JWT",
+			"value": "",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "vendedor_id",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-10-14T23:53:10.030Z",
+	"_postman_exported_using": "Postman/11.67.2"
+}

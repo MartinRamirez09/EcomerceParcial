@@ -3,7 +3,7 @@ import os, time, base64, re, requests
 from urllib.parse import quote_plus
 from dotenv import load_dotenv, find_dotenv
 
-# Carga robusta del .env (desde donde ejecutas uvicorn)
+# Carga del .env (desde donde ejecutas uvicorn)
 load_dotenv(find_dotenv(usecwd=True), override=True)
 
 def _slug(s: str) -> str:
@@ -109,7 +109,7 @@ def generar_imagen(descripcion_marketing: str, nombre_producto: str) -> str:
             resp = client.images.generate(
                 model="gpt-image-1",
                 prompt=prompt,
-                size="512x512",              # puedes subir a 1024x1024
+                size="512x512",              
                 response_format="b64_json"
             )
             b64 = resp.data[0].b64_json

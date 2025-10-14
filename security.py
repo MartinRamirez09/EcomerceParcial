@@ -10,7 +10,7 @@ import os
 
 from database import get_db
 from schemas import TokenData
-from models import Vendedor  # <- usamos el modelo directamente, no importamos crud
+from models import Vendedor  
 
 load_dotenv()
 
@@ -47,11 +47,11 @@ async def get_current_vendedor(
         user_id: int = payload.get("user_id")
         if email is None or user_id is None:
             raise credentials_exception
-        _ = TokenData(sub=email, user_id=user_id)  # sólo para validación
+        _ = TokenData(sub=email, user_id=user_id) 
     except JWTError:
         raise credentials_exception
 
-    # Consulta directa a la BD (evita importar crud)
+    # Consulta directa a la BD 
     vendedor = db.query(Vendedor).filter(Vendedor.email == email).first()
     if vendedor is None or vendedor.id != user_id:
         raise credentials_exception
